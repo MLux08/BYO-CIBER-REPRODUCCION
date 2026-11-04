@@ -105,6 +105,14 @@ JUEGO REPASO TEMA LA ADOLESCENCIA Y REPRODUCCIÓN. 6º PRIMARIA CONOCIMIENTO DEL
             font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer;
         }
 
+        .banner-container {
+            width: 100%; max-width: 1000px; margin-bottom: 5px;
+            border-radius: var(--card-radius); overflow: hidden;
+            border: 2px solid var(--cyber-cyan); box-shadow: var(--border-glow);
+            background: rgba(0,0,0,0.5);
+        }
+        .banner-img { width: 100%; max-height: 200px; object-fit: cover; display: block; }
+
         .mission-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
         .mission-tab {
             background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1);
@@ -142,7 +150,7 @@ JUEGO REPASO TEMA LA ADOLESCENCIA Y REPRODUCCIÓN. 6º PRIMARIA CONOCIMIENTO DEL
             border: 1px solid rgba(0, 243, 255, 0.2); border-radius: 12px; padding: 12px;
             margin: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;
         }
-        .img-diagram-box img { max-width: 100%; max-height: 320px; object-fit: contain; border-radius: 8px; }
+        .img-diagram-box img { max-width: 100%; max-height: 340px; object-fit: contain; border-radius: 8px; }
 
         .scheme-box {
             background: rgba(15, 23, 42, 0.8); border: 1.5px dashed var(--cyber-cyan);
@@ -181,10 +189,20 @@ JUEGO REPASO TEMA LA ADOLESCENCIA Y REPRODUCCIÓN. 6º PRIMARIA CONOCIMIENTO DEL
 
         .feedback-box {
             background: rgba(0,0,0,0.6); border-radius: 12px; padding: 16px 20px;
-            border-left: 5px solid var(--cyber-cyan); display: none; flex-direction: column; gap: 8px;
+            border-left: 5px solid var(--cyber-cyan); display: none; flex-direction: column; gap: 10px;
         }
         .feedback-box.correct { border-left-color: var(--cyber-green); background: rgba(0, 255, 102, 0.08); }
         .feedback-box.wrong { border-left-color: var(--cyber-pink); background: rgba(255, 0, 127, 0.08); }
+
+        .maestra-msg-container {
+            display: flex; align-items: center; gap: 12px; background: rgba(255, 234, 0, 0.12);
+            padding: 12px 16px; border-radius: 12px; border: 1.5px dashed var(--cyber-yellow);
+        }
+        .nutribot-avatar {
+            width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--cyber-yellow);
+            object-fit: cover; flex-shrink: 0; box-shadow: 0 0 10px rgba(255, 234, 0, 0.5);
+        }
+        .maestra-text { font-style: italic; color: var(--cyber-yellow); font-weight: 700; font-size: 1rem; }
 
         .results-card {
             background: var(--card-bg); border: 2px solid var(--cyber-green);
@@ -233,6 +251,10 @@ JUEGO REPASO TEMA LA ADOLESCENCIA Y REPRODUCCIÓN. 6º PRIMARIA CONOCIMIENTO DEL
             <div class="stat-box">🏆 Rango: <span id="rank-val" class="stat-value" style="color:var(--cyber-cyan);">Recluta</span></div>
         </div>
         <button class="audio-btn" id="audio-toggle" onclick="toggleAudio()">🎵 MÚSICA ON</button>
+    </div>
+
+    <div class="banner-container">
+        <img src="bio_cyber_mascot.png" alt="BIO-CYBER 2050 Banner" class="banner-img" onerror="this.style.display='none'">
     </div>
 
     <div class="mission-nav">
@@ -288,11 +310,12 @@ JUEGO REPASO TEMA LA ADOLESCENCIA Y REPRODUCCIÓN. 6º PRIMARIA CONOCIMIENTO DEL
 </div>
 
 <script>
+// NOMBRES EXACTOS DE ARCHIVOS EN GITHUB
 const IMAGES = {
-    fem: "APARATO_REP._FEM..png",
-    masc: "APARATO_REP._MASC.png",
+    fem: "APARATO REP. FEM..png",
+    masc: "APARATO REP. MASC.png",
     part: "PART.png",
-    fases_parto: "FASES_PARTO.png"
+    fases_parto: "FASES PARTO.png"
 };
 
 let studentData = { name: "", class: "6º de Primaria" };
@@ -302,7 +325,7 @@ let userAnswers = {};
 let currentMission = 1;
 let audioCtx = null, isAudioPlaying = false, bgmTimer = null;
 
-// BATERÍA COMPLETA DE 40 DESAFÍOS (10 POR NIVEL)
+// 40 DESAFÍOS CON OPCIONES DEL TEMA 3 Y FRASES HUMORÍSTICAS DE Mª LUZ
 const QUEST_DATA = [
     // --- NIVEL 1: PUBERTAD Y CARACTERES SEXUALES ---
     {
@@ -310,157 +333,162 @@ const QUEST_DATA = [
         title: "Diferencia entre Pubertad y Adolescencia",
         text: "¿Cuál es la diferencia biológica entre la pubertad y la adolescencia?",
         options: [
-            "La pubertad son los cambios emocionales y la adolescencia es la alimentación.",
-            "La pubertad es la fase biológica de maduración de los órganos reproductores y la adolescencia abarca los cambios físicos, psicológicos y sociales.",
-            "Ambos términos significan exactamente lo mismo sin ninguna diferencia.",
-            "La pubertad ocurre a los 50 años y la adolescencia a los 5 años.",
-            "La pubertad se refiere únicamente a la respiración celular."
+            "La pubertad son los cambios psicológicos y emocionales, mientras que la adolescencia es el desarrollo de la placenta.",
+            "La pubertad es la fase biológica de maduración de las gónadas y órganos reproductores, mientras que la adolescencia abarca los cambios físicos, psicológicos y sociales hacia la edad adulta.",
+            "La pubertad consiste en el desprendimiento mensual del endometrio y la adolescencia en la producción de líquido seminal.",
+            "La pubertad se refiere al desarrollo de caracteres primarios al nacer y la adolescencia al momento del alumbramiento.",
+            "La pubertad es la unión del óvulo y el espermatozoide y la adolescencia es la etapa de lactancia materna."
         ],
         correct: 1,
-        explain: "La pubertad es el periodo de cambios físicos y maduración sexual, mientras que la adolescencia es una etapa más amplia de desarrollo integral."
+        explain: "La pubertad es el periodo biológico de maduración sexual; la adolescencia es la etapa de transición psicosocial global hacia la edad adulta."
     },
     {
         id: "m1_q2", mission: 1, idx: 2, type: "match", points: 100, diff: "MEDIO",
         title: "Clasificación de Caracteres Sexuales",
         text: "Relaciona cada rasgo físico con su tipo de carácter sexual:",
         pairs: [
-            { key: "Órganos reproductores al nacer (Ovarios / Testículos)", correct: "Carácter Primario" },
-            { key: "Desarrollo de mamas y ensanchamiento de caderas", correct: "Carácter Secundario Femenino" },
-            { key: "Voz más grave y vello facial / barba", correct: "Carácter Secundario Masculino" }
+            { key: "Órganos reproductores presentes desde el nacimiento (ovarios, útero, testículos)", correct: "Carácter Sexual Primario" },
+            { key: "Desarrollo de mamas, ensanchamiento de caderas y primera menstruación", correct: "Carácter Sexual Secundario Femenino" },
+            { key: "Cambio de voz más grave, desarrollo muscular y vello facial / barba", correct: "Carácter Sexual Secundario Masculino" }
         ],
-        optionsList: ["Carácter Primario", "Carácter Secundario Femenino", "Carácter Secundario Masculino"],
-        explain: "Los caracteres primarios están presentes desde el nacimiento. Los secundarios se desarrollan en la pubertad impulsados por las hormonas."
+        optionsList: ["Carácter Sexual Primario", "Carácter Sexual Secundario Femenino", "Carácter Sexual Secundario Masculino"],
+        explain: "Los caracteres primarios están presentes al nacer; los secundarios aparecen en la pubertad promovidos por los estrógenos y la testosterona."
     },
     {
         id: "m1_q3", mission: 1, idx: 3, type: "fill", points: 100, diff: "MEDIO",
-        title: "Concepto de Animal Vivíparo",
-        text: "Completa el texto seleccionando las palabras adecuadas:",
-        template: "El ser humano tiene reproducción {1} y es un animal {2}, lo que significa que el embrión se desarrolla dentro del {3} materno.",
+        title: "Concepto de Animal Vivíparo y Fecundación",
+        text: "Completa el texto con los conceptos biológicos del tema:",
+        template: "El ser humano posee reproducción {1} con fecundación {2} y es un animal {3}, lo que significa que el embrión se desarrolla dentro del {4} de la madre.",
         blanks: [
-            { id: 1, correct: "sexual", choices: ["sexual", "asexual", "vegetativa"] },
-            { id: 2, correct: "vivíparo", choices: ["vivíparo", "ovíparo", "ovovivíparo"] },
-            { id: 3, correct: "útero", choices: ["útero", "estómago", "pulmón"] }
+            { id: 1, correct: "sexual", choices: ["sexual", "asexual", "alternante"] },
+            { id: 2, correct: "interna", choices: ["interna", "externa", "umbilical"] },
+            { id: 3, correct: "vivíparo", choices: ["vivíparo", "ovíparo", "univitelino"] },
+            { id: 4, correct: "útero", choices: ["útero", "ovario", "conducto deferente"] }
         ],
-        explain: "Las personas nos reproducimos mediante la unión de dos gametos (reproducción sexual) y los bebés nacen del útero materno (vivíparos)."
+        explain: "El ser humano combina reproducción sexual vivípara e interna, nutriendo al embrión en el útero materno."
     },
     {
         id: "m1_q4", mission: 1, idx: 4, type: "mc5", points: 50, diff: "FÁCIL",
         title: "Edad de Inicio de la Pubertad",
         text: "¿Alrededor de qué edad suele comenzar habitualmente la pubertad en niños y niñas?",
         options: [
-            "Entre los 2 y los 4 años.",
-            "Entre los 10 y los 12 años aproximadamente.",
-            "A los 30 años exactamente.",
-            "A los 70 años durante la ancianidad.",
-            "A los 18 meses de vida."
+            "Desde el nacimiento hasta los 3 años durante la primera infancia.",
+            "Entre los 10 y los 13 años aproximadamente, según el ritmo biológico individual.",
+            "A los 18 años al alcanzar la mayoría de edad legal.",
+            "A los 50 años al finalizar la etapa fértil con la menopausia.",
+            "A partir de los 25 años tras la consolidación ósea definitiva."
         ],
         correct: 1,
-        explain: "La pubertad suele iniciarse entre los 10 y 12 años, aunque el ritmo varía de forma completamente normal entre cada persona."
+        explain: "La pubertad suele iniciarse entre los 10 y 13 años, aunque el ritmo varía de forma completamente normal en cada individuo."
     },
     {
         id: "m1_q5", mission: 1, idx: 5, type: "scheme", points: 150, diff: "DIFÍCIL",
         title: "Esquema General de la Reproducción Humana",
-        text: "Completa los nodos del esquema del proceso reproductivo:",
+        text: "Completa los nodos del proceso reproductivo:",
         nodes: [
-            { label: "Gametos Femeninos:", correct: "Óvulos", choices: ["Óvulos", "Espermatozoides", "Cigotos"] },
-            { label: "Gametos Masculinos:", correct: "Espermatozoides", choices: ["Espermatozoides", "Óvulos", "Placenta"] },
-            { label: "Unión de Gametos (Lugar):", correct: "Trompa de Falopio", choices: ["Trompa de Falopio", "Vejiga", "Estómago"] }
+            { label: "Gametos Femeninos (liberados por el ovario):", correct: "Óvulos", choices: ["Óvulos", "Espermatozoides", "Cigotos"] },
+            { label: "Gametos Masculinos (producidos en el testículo):", correct: "Espermatozoides", choices: ["Espermatozoides", "Óvulos", "Hormonas"] },
+            { label: "Unión de ambos gametos en las trompas:", correct: "Fecundación", choices: ["Fecundación", "Anidación", "Alumbramiento"] }
         ],
-        explain: "Los óvulos y los espermatozoides se unen en las trompas de Falopio dando comienzo a la fecundación."
+        // REACCIÓN EXCLUSIVA DE Mª LUZ EN EL BLOQUE 1
+        maestraCorrect: "👩‍🏫 ¡La maestra Mª Luz celebra con entusiasmo en el aula! '¡Brillante! ¡Así se demuestra que estabais atentos en clase! ¡Os habéis ganado un aplauso científico!'",
+        maestraWrong: "👩‍🏫 La maestra Mª Luz se lleva la mano a la cabeza... '¡Ay Diosito, llévame pronto! ¡Si esto lo repasamos ayer en la pizarra tres veces!'",
+        explain: "Los óvulos y los espermatozoides se unen en las trompas de Falopio en el proceso de fecundación."
     },
     {
         id: "m1_q6", mission: 1, idx: 6, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Función de las Hormonas en la Pubertad",
-        text: "¿Qué sustancias químicas desencadenan los cambios físicos y la maduración en la pubertad?",
+        title: "Sustancias que Desencadenan los Cambios Puberales",
+        text: "¿Qué sustancias químicas producidas por las gónadas desencadenan los caracteres secundarios?",
         options: [
-            "Los ácidos gástricos del estómago.",
-            "Las hormonas producidas por el sistema endocrino y las gónadas.",
-            "La saliva y los jugos pancreáticos.",
-            "El sudor de las glándulas sudoríparas.",
-            "El aire inspirado por los alveolos."
+            "El líquido amniótico producido dentro de la bolsa amniótica.",
+            "Hormonas sexuales como los estrógenos, la progesterona y la testosterona.",
+            "Los anticuerpos transmisibles mediante la lactancia materna.",
+            "La mucosa endometrial desprendida durante la menstruación.",
+            "El líquido seminal secretado por las vesículas seminales."
         ],
         correct: 1,
-        explain: "Las hormonas viajan por la sangre ordenando el desarrollo de los caracteres sexuales secundarios."
+        explain: "Las hormonas sexuales son los mensajeros químicos que activan el desarrollo de los caracteres secundarios."
     },
     {
         id: "m1_q7", mission: 1, idx: 7, type: "mc5", points: 50, diff: "FÁCIL",
-        title: "El Estirón Puberal",
-        text: "¿Cómo se llama el rápido crecimiento en altura que se experimenta en la pubertad?",
+        title: "Aceleración del Crecimiento Óseo y Muscular",
+        text: "¿Cómo se denomina la fase de crecimiento acelerado en altura durante la pubertad?",
         options: [
-            "Ciclo menstrual.",
-            "El estirón puberal.",
-            "Hematosis alveolar.",
-            "Alumbramiento.",
-            "Fecundación."
+            "La anidación uterina tras la fijación del embrión.",
+            "El estirón puberal por rápido crecimiento esquelético y muscular.",
+            "La dilatación cervical que inicia el parto.",
+            "El alumbramiento tras la salida de la placenta.",
+            "La ovulación mensual del folículo ovárico."
         ],
         correct: 1,
-        explain: "El estirón puberal se debe al rápido crecimiento del sistema esquelético y muscular durante esta etapa."
+        explain: "El estirón puberal es el crecimiento acelerado de huesos y músculos provocado por la acción hormonal."
     },
     {
         id: "m1_q8", mission: 1, idx: 8, type: "fill", points: 100, diff: "MEDIO",
-        title: "Cambios Emocionales en la Adolescencia",
+        title: "Evolución Psicológica y Emocional",
         text: "Completa el texto sobre los cambios psicológicos:",
-        template: "Durante la adolescencia no solo cambia el cuerpo, sino también la búsqueda de la propia {1} y el deseo de mayor {2} en las decisiones cotidianas.",
+        template: "Durante la adolescencia se consolida la {1} personal y se busca una mayor {2} en las decisiones, mientras se experimentan cambios de humor por la acción de las {3}.",
         blanks: [
-            { id: 1, correct: "identidad", choices: ["identidad", "dentadura", "estatura"] },
-            { id: 2, correct: "autonomía", choices: ["autonomía", "infancia", "respiración"] }
+            { id: 1, correct: "identidad", choices: ["identidad", "gestación", "gónada"] },
+            { id: 2, correct: "autonomía", choices: ["autonomía", "fecundación", "lactancia"] },
+            { id: 3, correct: "hormonas", choices: ["hormonas", "placentas", "uretras"] }
         ],
-        explain: "La adolescencia se caracteriza por la conformación de la identidad personal y el desarrollo de la autonomía."
+        explain: "La maduración psicológica abarca la búsqueda de identidad personal y autonomía guiada por los cambios hormonales."
     },
     {
         id: "m1_q9", mission: 1, idx: 9, type: "match", points: 100, diff: "MEDIO",
-        title: "Diferenciación de Caracteres Sexuales Masculinos",
-        text: "Relaciona cada rasgo masculino con su origen:",
+        title: "Diferenciación de Rasgos Masculinos",
+        text: "Relaciona cada estructura masculina con su categoría:",
         pairs: [
-            { key: "Presencia de pene y testículos", correct: "Presente desde el nacimiento" },
-            { key: "Crecimiento de barba y cambio de voz", correct: "Aparece en la pubertad" }
+            { key: "Presencia de pene, testículos y escroto al nacer", correct: "Carácter Sexual Primario Masculino" },
+            { key: "Aparición de barba, voz grave y aumento de masa muscular", correct: "Carácter Sexual Secundario Masculino" }
         ],
-        optionsList: ["Presente desde el nacimiento", "Aparece en la pubertad"],
-        explain: "Los órganos genitales son primarios (al nacer); la barba y voz grave son secundarios (en la pubertad)."
+        optionsList: ["Carácter Sexual Primario Masculino", "Carácter Sexual Secundario Masculino"],
+        explain: "Genitales = primarios; vello corporal, voz grave y musculatura = secundarios."
     },
     {
         id: "m1_q10", mission: 1, idx: 10, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Ritmo de Desarrollo Individual",
-        text: "¿Por qué dos compañeros de la misma edad pueden tener alturas distintas en 6º de Primaria?",
+        title: "Variabilidad en el Ritmo de Desarrollo",
+        text: "¿A qué se debe que dos alumnos de 6º de Primaria tengan alturas o cambios corporales distintos?",
         options: [
-            "Porque uno de ellos tiene una enfermedad grave obligatoriamente.",
-            "Porque cada cuerpo tiene su propio reloj biológico y ritmo de desarrollo normal.",
-            "Porque solo los chicos crecen y las chicas no.",
-            "Porque depende del color de pelo de cada uno.",
-            "Porque respiran aire de distinto tipo."
+            "A que los chicos crecen durante el embarazo y las chicas únicamente tras la menopausia.",
+            "A que el reloj biológico de cada persona inicia la maduración hormonal a edades distintas dentro de la normalidad.",
+            "A que el estirón puberal solo ocurre si ha habido fecundación previa en las trompas de Falopio.",
+            "A que la producción de espermatozoides detiene el crecimiento muscular definitivamente.",
+            "A que el desarrollo de los caracteres primarios sustituye al crecimiento óseo."
         ],
         correct: 1,
-        explain: "Cada cuerpo evoluciona a su propio ritmo. La diversidad en la velocidad de crecimiento es completamente natural."
+        explain: "La pubertad tiene un rango de inicio amplio y totalmente normal según el ritmo biológico de cada cuerpo."
     },
 
     // --- NIVEL 2: ANATOMÍA DE LOS APARATOS REPRODUCTORES Y GAMETOS ---
     {
         id: "m2_q1", mission: 2, idx: 1, type: "mc5", points: 50, diff: "FÁCIL",
         title: "Gónadas Femeninas",
-        text: "¿Cómo se llaman las gónadas femeninas encargadas de producir los óvulos?",
+        text: "¿Cómo se llaman las gónadas femeninas encargadas de madurar los óvulos?",
         options: [
-            "Los testículos.",
-            "Los ovarios.",
-            "Los nefrones.",
-            "Los bronquios.",
-            "Los capilares."
+            "Las trompas de Falopio, donde se almacena el líquido amniótico.",
+            "Los ovarios, situados en la cavidad pélvica a ambos lados del útero.",
+            "Las vesículas seminales, encargadas de formar la placenta.",
+            "La próstata, encargada de conducir la orina y los óvulos.",
+            "La vulva, formada por los conductos deferentes internos."
         ],
         correct: 1,
-        explain: "Los ovarios son las gónadas femeninas situadas en la cavidad pélvica."
+        explain: "Los ovarios son las gónadas femeninas que albergan y maduran los óvulos."
     },
     {
         id: "m2_q2", mission: 2, idx: 2, type: "mc5", points: 50, diff: "FÁCIL",
         title: "Gónadas Masculinas",
         text: "¿Dónde se producen continuamente los espermatozoides a partir de la pubertad?",
         options: [
-            "En el estómago.",
-            "En los testículos.",
-            "En los pulmones.",
-            "En las glándulas sudoríparas.",
-            "En la tráquea."
+            "En los conductos deferentes, que fabrican el líquido seminal.",
+            "En los testículos, alojados externamente dentro de la bolsa del escroto.",
+            "En el endometrio, donde se forman los espermatozoides.",
+            "En el cuello del útero, que conecta con la próstata.",
+            "En las vesículas seminales del pene."
         ],
         correct: 1,
-        explain: "Los testículos fabrican espermatozoides continuamente y se alojan dentro de la bolsa del escroto."
+        explain: "Los testículos son las gónadas masculinas que producen espermatozoides y testosterona."
     },
     {
         id: "m2_q3", mission: 2, idx: 3, type: "img_label", points: 150, diff: "DIFÍCIL",
@@ -468,12 +496,15 @@ const QUEST_DATA = [
         imgKey: "fem",
         text: "Observa el esquema del Aparato Reproductor Femenino y asigna el nombre a cada etiqueta:",
         labels: [
-            { id: 1, text: "Conducto superior arqueado:", correct: "Trompa de Falopio", choices: ["Trompa de Falopio", "Vagina", "Útero"] },
-            { id: 2, text: "Órgano redondeado ovalado:", correct: "Ovario", choices: ["Ovario", "Vulva", "Próstata"] },
-            { id: 3, text: "Órgano muscular central hueco:", correct: "Útero", choices: ["Útero", "Vagina", "Uréter"] },
-            { id: 4, text: "Conducto de comunicación inferior:", correct: "Vagina", choices: ["Vagina", "Trompa de Falopio", "Ovario"] }
+            { id: 1, text: "Conducto superior arqueado que conecta ovarios y útero:", correct: "Trompa de Falopio", choices: ["Trompa de Falopio", "Vagina", "Uretra"] },
+            { id: 2, text: "Órgano ovalado productor de óvulos:", correct: "Ovario", choices: ["Ovario", "Útero", "Próstata"] },
+            { id: 3, text: "Órgano muscular hueco donde se aloja el embrión:", correct: "Útero", choices: ["Útero", "Vagina", "Ovario"] },
+            { id: 4, text: "Conducto elástico que comunica el útero con la vulva:", correct: "Vagina", choices: ["Vagina", "Trompa de Falopio", "Conducto deferente"] }
         ],
-        explain: "El aparato femenino está formado por Ovarios, Trompas de Falopio, Útero, Vagina y Vulva."
+        // REACCIÓN EXCLUSIVA DE Mª LUZ EN EL BLOQUE 2
+        maestraCorrect: "👩‍🏫 ¡La maestra Mª Luz sonríe orgullosa! '¡Impresionante precisión anatómica! ¡Se nota que habéis estudiado los esquemas a fondo!'",
+        maestraWrong: "👩‍🏫 La maestra Mª Luz mira al cielo... '¡Siento cómo me acaba de salir otra cana al ver esta respuesta! ¡Revisad bien los órganos del aparato reproductor!'",
+        explain: "El aparato femenino está integrado por Ovarios, Trompas de Falopio, Útero, Vagina y Vulva."
     },
     {
         id: "m2_q4", mission: 2, idx: 4, type: "img_label", points: 150, diff: "DIFÍCIL",
@@ -481,10 +512,10 @@ const QUEST_DATA = [
         imgKey: "masc",
         text: "Observa el diagrama del Aparato Reproductor Masculino e identifica sus partes principales:",
         labels: [
-            { id: 1, text: "Conducto largo de transporte:", correct: "Conducto deferente", choices: ["Conducto deferente", "Uretra", "Pene"] },
-            { id: 2, text: "Glándula redondeada debajo de la vejiga:", correct: "Próstata", choices: ["Próstata", "Testículo", "Escroto"] },
-            { id: 3, text: "Órgano productor en la bolsa externa:", correct: "Testículo", choices: ["Testículo", "Útero", "Vena"] },
-            { id: 4, text: "Conducto que recorre el pene:", correct: "Uretra", choices: ["Uretra", "Conducto deferente", "Trompa"] }
+            { id: 1, text: "Conducto largo que transporta espermatozoides desde los testículos:", correct: "Conducto deferente", choices: ["Conducto deferente", "Uretra", "Pene"] },
+            { id: 2, text: "Glándula que produce el líquido seminal protector:", correct: "Próstata", choices: ["Próstata", "Testículo", "Escroto"] },
+            { id: 3, text: "Órgano gónada situado dentro del escroto:", correct: "Testículo", choices: ["Testículo", "Útero", "Vesícula"] },
+            { id: 4, text: "Conducto que recorre el pene para expulsar semen u orina:", correct: "Uretra", choices: ["Uretra", "Conducto deferente", "Trompa"] }
         ],
         explain: "El aparato masculino consta de Testículos (en el Escroto), Conductos deferentes, Próstata, Uretra y Pene."
     },
@@ -493,91 +524,92 @@ const QUEST_DATA = [
         title: "Comparación de Gametos",
         text: "Relaciona cada propiedad con el gameto femenino o masculino:",
         pairs: [
-            { key: "Célula grande, esférica e inmóvil", correct: "Óvulo" },
-            { key: "Célula pequeña con cola larga y móvil", correct: "Espermatozoide" },
-            { key: "Gónada que la produce", correct: "Ovario / Testículo" }
+            { key: "Célula grande, esférica, inmóvil y rica en nutrientes de reserva", correct: "Óvulo" },
+            { key: "Célula pequeña con cabeza y cola larga móvil (flagelo)", correct: "Espermatozoide" },
+            { key: "Gónadas donde se producen los gametos correspondientes", correct: "Ovarios y Testículos" }
         ],
-        optionsList: ["Óvulo", "Espermatozoide", "Ovario / Testículo"],
-        explain: "El óvulo reserva nutrientes y es inmóvil; el espermatozoide se desplaza activamente gracias a su flagelo."
+        optionsList: ["Óvulo", "Espermatozoide", "Ovarios y Testículos"],
+        explain: "El óvulo es grande e inmóvil; el espermatozoide es pequeño y se desplaza mediante flagelo."
     },
     {
         id: "m2_q6", mission: 2, idx: 6, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Función de la Próstata y Vesículas Seminales",
-        text: "¿Qué líquido producen la próstata y las vesículas seminales para ayudar a los espermatozoides?",
+        title: "Función del Líquido Seminal",
+        text: "¿Qué función cumplen la próstata y las vesículas seminales al producir el líquido seminal?",
         options: [
-            "La bilis para digerir grasas.",
-            "El líquido seminal que nutre y facilita el transporte de los espermatozoides.",
-            "La orina para limpiar la vejiga.",
-            "El sudor corporal.",
-            "La sangre arterial."
+            "Producir los óvulos maduros durante la ovulación mensual.",
+            "Proporcionar nutrientes, energía y un medio líquido de transporte a los espermatozoides.",
+            "Recubrir la bolsa amniótica para proteger al feto de golpes.",
+            "Formar la placenta durante la segunda fase del parto.",
+            "Desprender la mucosa uterina en ausencia de fecundación."
         ],
         correct: 1,
-        explain: "El líquido seminal proporciona energía y un medio acuoso protector a los espermatozoides formando el semen."
+        explain: "El líquido seminal nutre y transporta a los espermatozoides formando el semen."
     },
     {
         id: "m2_q7", mission: 2, idx: 7, type: "fill", points: 100, diff: "MEDIO",
-        title: "La Vulva y los Genitales Externos Femeninos",
-        text: "Completa la frase sobre la anatomía externa femenina:",
-        template: "La {1} es el conjunto de los órganos genitales externos femeninos que protegen la entrada de la {2} y de la uretra.",
+        title: "La Vulva y los Genitales Externos",
+        text: "Completa el texto anatómico:",
+        template: "La {1} constituye el órgano genital externo femenino, formado por los labios mayores y menores que protegen la entrada de la {2} y de la {3}.",
         blanks: [
-            { id: 1, correct: "vulva", choices: ["vulva", "próstata", "matriz"] },
-            { id: 2, correct: "vagina", choices: ["vagina", "tráquea", "trompa"] }
+            { id: 1, correct: "vulva", choices: ["vulva", "próstata", "placenta"] },
+            { id: 2, correct: "vagina", choices: ["vagina", "uretra", "trompa"] },
+            { id: 3, correct: "uretra", choices: ["uretra", "vesícula", "trompa"] }
         ],
-        explain: "La vulva está formada por pliegues cutáneos (labios) que resguardan los orificios vaginal y uretral."
+        explain: "La vulva comprende las estructuras genitales externas femeninas que resguardan vagina y uretra."
     },
     {
         id: "m2_q8", mission: 2, idx: 8, type: "mc5", points: 100, diff: "MEDIO",
-        title: "El Escroto y la Temperatura",
-        text: "¿Por qué los testículos se alojan fuera de la cavidad abdominal dentro del escroto?",
+        title: "Ubicación del Escroto y Temperatura",
+        text: "¿Por qué los testículos se alojan en la bolsa del escroto fuera de la cavidad abdominal?",
         options: [
-            "Porque no caben dentro del vientre.",
-            "Para mantenerse a una temperatura ligeramente inferior a la del cuerpo, necesaria para la producción de espermatozoides.",
-            "Para estar más cerca de los pulmones.",
-            "Porque se mueven con los músculos de los brazos.",
-            "Para producir jugo gástrico."
+            "Porque los testículos deben conectar directamente con la placenta durante la gestación.",
+            "Porque la formación de espermatozoides exige una temperatura unos 2-3 °C inferior a la del interior del cuerpo.",
+            "Porque en el escroto se produce la maduración de los óvulos femeninos.",
+            "Porque facilita la anidación del cigoto en la mucosa del útero.",
+            "Porque evita que el líquido seminal se mezcle con los estrógenos."
         ],
         correct: 1,
-        explain: "La espermatogénesis requiere unos 2-3 °C menos que la temperatura corporal interna."
+        explain: "La formación de espermatozoides requiere una temperatura ligeramente más baja que la temperatura corporal interna."
     },
     {
         id: "m2_q9", mission: 2, idx: 9, type: "mc5", points: 50, diff: "FÁCIL",
         title: "Doble Función de la Uretra Masculina",
-        text: "¿Qué dos líquidos circulan por la uretra masculina en momentos diferentes?",
+        text: "¿Qué dos funciones cumple el conducto de la uretra en el varón?",
         options: [
-            "La saliva y el aire.",
-            "La orina (excreción) y el semen (reproducción).",
-            "La sangre y la bilis.",
-            "El sudor y las lágrimas.",
-            "El quimo y el quilo."
+            "Conectar los ovarios con el útero y transportar el líquido amniótico.",
+            "Expulsar la orina procedente de la vejiga (excreción) y el semen procedente de las vías genitales (reproducción).",
+            "Fabricar las hormonas sexuales y filtrar las sustancias de la placenta.",
+            "Almacenar los óvulos no fecundados hasta la menopausia.",
+            "Expulsar la mucosa del endometrio durante el alumbramiento."
         ],
         correct: 1,
-        explain: "La uretra masculina es un conducto compartido entre el aparato excretor y el reproductor."
+        explain: "La uretra masculina transporta tanto orina como semen en momentos distintos."
     },
     {
         id: "m2_q10", mission: 2, idx: 10, type: "scheme", points: 150, diff: "DIFÍCIL",
-        title: "Esquema Anatómico Comparativo",
-        text: "Completa los componentes del esquema de gónadas y gametos:",
+        title: "Esquema Anatómico Comparativo de Gónadas y Gametos",
+        text: "Completa la correspondencia entre gónadas, gametos y hormonas:",
         nodes: [
-            { label: "Gónada Femenina (Ovario) produce ➔", correct: "Óvulo", choices: ["Óvulo", "Semen", "Próstata"] },
-            { label: "Gónada Masculina (Testículo) produce ➔", correct: "Espermatozoide", choices: ["Espermatozoide", "Endometrio", "Uréter"] }
+            { label: "Gónada Femenina (Ovario) ➔", correct: "Fabrica Óvulos y produce Estrógenos", choices: ["Fabrica Óvulos y produce Estrógenos", "Fabrica Espermatozoides y produce Testosterona", "Produce Líquido Seminal"] },
+            { label: "Gónada Masculina (Testículo) ➔", correct: "Fabrica Espermatozoides y produce Testosterona", choices: ["Fabrica Espermatozoides y produce Testosterona", "Fabrica Óvulos y produce Estrógenos", "Forma Placenta y Líquido Amniótico"] }
         ],
-        explain: "Las gónadas son los órganos productores de los gametos correspondientes."
+        explain: "Ovarios = Óvulos + Estrógenos/Progesterona; Testículos = Espermatozoides + Testosterona."
     },
 
     // --- NIVEL 3: FECUNDACIÓN, GESTACIÓN Y PARTO ---
     {
         id: "m3_q1", mission: 3, idx: 1, type: "mc5", points: 100, diff: "MEDIO",
         title: "Lugar de la Fecundación",
-        text: "¿En qué lugar exacto del aparato reproductor femenino tiene lugar la fecundación?",
+        text: "¿En qué zona del aparato reproductor femenino tiene lugar la fecundación?",
         options: [
-            "En la vejiga urinaria.",
-            "En las Trompas de Falopio.",
-            "En el estómago.",
-            "En la uretra.",
-            "En el intestino grueso."
+            "En el interior de la cavidad del útero durante la dilatación.",
+            "En el tercio superior de las Trompas de Falopio.",
+            "En la próstata justo antes de la expulsión del semen.",
+            "En el interior de los ovarios durante la ovulación.",
+            "En el canal de la vagina tras el nacimiento del feto."
         ],
         correct: 1,
-        explain: "La unión del óvulo y el espermatozoide se produce en la trompa de Falopio."
+        explain: "El encuentro del óvulo y el espermatozoide se produce en las trompas de Falopio."
     },
     {
         id: "m3_q2", mission: 3, idx: 2, type: "img_label", points: 150, diff: "DIFÍCIL",
@@ -585,252 +617,263 @@ const QUEST_DATA = [
         imgKey: "part",
         text: "Observa el esquema del embarazo dentro del útero e identifica sus 4 elementos:",
         labels: [
-            { id: 1, text: "Órgano de la pared uterina arriba a la izquierda:", correct: "Placenta", choices: ["Placenta", "Vagina", "Testículo"] },
-            { id: 2, text: "Cordón que une la placenta con el bebé:", correct: "Cordón umbilical", choices: ["Cordón umbilical", "Tráquea", "Uréter"] },
-            { id: 3, text: "Líquido protector en la bolsa amniótica:", correct: "Líquido amniótico", choices: ["Líquido amniótico", "Sangre", "Orina"] },
-            { id: 4, text: "Pared muscular elástica envolvente:", correct: "Útero", choices: ["Útero", "Ovario", "Estómago"] }
+            { id: 1, text: "Órgano adosado a la pared del útero para intercambio de nutrientes:", correct: "Placenta", choices: ["Placenta", "Vagina", "Ovario"] },
+            { id: 2, text: "Conducto vascular que conecta la placenta con el abdomen fetal:", correct: "Cordón umbilical", choices: ["Cordón umbilical", "Uretra", "Conducto deferente"] },
+            { id: 3, text: "Fluido amortiguador contenido en la bolsa embrionaria:", correct: "Líquido amniótico", choices: ["Líquido amniótico", "Semen", "Endometrio"] },
+            { id: 4, text: "Órgano muscular expandido que aloja la gestación:", correct: "Útero", choices: ["Útero", "Vulva", "Próstata"] }
         ],
-        explain: "Durante la gestación, la Placenta, el Cordón umbilical y el Líquido amniótico nutren y protegen al feto en el Útero."
+        explain: "Placenta, Cordón umbilical, Líquido amniótico y Útero sostienen el desarrollo prenatal."
     },
     {
         id: "m3_q3", mission: 3, idx: 3, type: "fill", points: 100, diff: "MEDIO",
         title: "El Cigoto y la Anidación Uterina",
-        text: "Completa la secuencia inicial tras la fecundación:",
-        template: "Tras la fecundación se forma el {1}, la primera célula del nuevo ser. Esta célula se divide y viaja hacia el {2} donde se fija en sus paredes en el proceso de anidación.",
+        text: "Completa la secuencia del desarrollo embrionario:",
+        template: "Tras la fecundación se forma el {1}. Este se divide repetidamente transformándose en {2}, el cual se desplaza hasta el {3} para implantarse en la mucosa del {4}.",
         blanks: [
             { id: 1, correct: "cigoto", choices: ["cigoto", "gameto", "feto"] },
-            { id: 2, correct: "útero", choices: ["útero", "ovario", "riñón"] }
+            { id: 2, correct: "embrión", choices: ["embrión", "óvulo", "espermatozoide"] },
+            { id: 3, correct: "útero", choices: ["útero", "ovario", "testículo"] },
+            { id: 4, correct: "endometrio", choices: ["endometrio", "escroto", "conducto"] }
         ],
-        explain: "El cigoto se convierte en embrión y se implanta en la pared mucosa del útero."
+        explain: "Cigoto ➔ Embrión ➔ Anidación en el endometrio uterino."
     },
     {
         id: "m3_q4", mission: 3, idx: 4, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Paso de Embrión a Feto",
-        text: "¿A partir de qué mes de embarazo el embrión tiene formados todos sus órganos y pasa a llamarse feto?",
+        title: "Transición de Embrión a Feto",
+        text: "¿Cuándo pasa el embrión a denominarse feto?",
         options: [
-            "En el primer día de fecundación.",
-            "A partir del 3º mes de embarazo.",
-            "En el momento del parto a los 9 meses.",
-            "A los 5 años del nacimiento.",
-            "En la pubertad."
+            "En el primer día tras la unión de los gametos en la trompa de Falopio.",
+            "Hacia el final del 3º mes de embarazo, cuando presenta todos los órganos y forma humana definida.",
+            "Durante la tercera fase del parto tras el desprendimiento de la placenta.",
+            "En el momento en que se inicia la lactancia materna tras el nacimiento.",
+            "Al llegar a la pubertad cuando aparecen los caracteres secundarios."
         ],
         correct: 1,
-        explain: "Hacia el final del 3º mes de gestación, el ser en desarrollo presenta todos los órganos y adquiere forma humana (feto)."
+        explain: "Al final del 3º mes todos los órganos básicos están formados y adquiere forma humana (feto)."
     },
     {
         id: "m3_q5", mission: 3, idx: 5, type: "match", points: 150, diff: "DIFÍCIL",
-        title: "Secuencia Cronológica de las 3 Fases del Parto",
-        text: "Asocia cada fase del parto con lo que sucede en ella:",
+        title: "Fases del Parto",
+        text: "Asocia cada fase del parto con sus acontecimientos:",
         pairs: [
-            { key: "1ª Fase: Dilatación", correct: "El cuello uterino se abre y se rompe la bolsa amniótica" },
-            { key: "2ª Fase: Expulsión", correct: "El bebé sale al exterior por la vagina" },
-            { key: "3ª Fase: Alumbramiento", correct: "Expulsión de la placenta y del cordón umbilical" }
+            { key: "1ª Fase: Dilatación", correct: "Apertura del cuello uterino (10 cm) y rotura de la bolsa amniótica" },
+            { key: "2ª Fase: Expulsión", correct: "Salida del bebé al exterior a través del canal de la vagina" },
+            { key: "3ª Fase: Alumbramiento", correct: "Desprendimiento y expulsión final de la placenta y del cordón umbilical" }
         ],
         optionsList: [
-            "El cuello uterino se abre y se rompe la bolsa amniótica",
-            "El bebé sale al exterior por la vagina",
-            "Expulsión de la placenta y del cordón umbilical"
+            "Apertura del cuello uterino (10 cm) y rotura de la bolsa amniótica",
+            "Salida del bebé al exterior a través del canal de la vagina",
+            "Desprendimiento y expulsión final de la placenta y del cordón umbilical"
         ],
-        explain: "Las tres etapas del parto son Dilatación, Expulsión (nacimiento del bebé) y Alumbramiento (salida de la placenta)."
+        // Mª LUZ EN EL BLOQUE 3
+        maestraCorrect: "👩‍🏫 ¡La maestra Mª Luz aplaude alegremente! '¡Perfecto! Habéis ordenado el proceso biológico impecablemente. ¡Qué gran equipo!'",
+        maestraWrong: "👩‍🏫 La maestra Mª Luz suspira dramáticamente... '¡Ay Diosito, llévame pronto! ¡Confundir las fases de la gestación me va a dejar el pelo blanco antes de tiempo!'",
+        explain: "Fases del parto: 1º Dilatación ➔ 2º Expulsión (Nacimiento) ➔ 3º Alumbramiento (Placenta)."
     },
     {
         id: "m3_q6", mission: 3, idx: 6, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Función de la Placenta y Cordón Umbilical",
-        text: "¿Cómo recibe el feto el oxígeno y los nutrientes necesarios para crecer?",
+        title: "Intercambio Placentario de Nutrientes y Oxígeno",
+        text: "¿Cómo se alimentan y respiran los fetos durante la gestación?",
         options: [
-            "Comiendo alimentos sólidos por la boca.",
-            "A través de los vasos sanguíneos de la placenta y del cordón umbilical.",
-            "Respirando aire con sus propios pulmones.",
-            "Beber agua de la vejiga de la madre.",
-            "Filtrando orina por los riñones."
+            "El feto digiere alimentos directamente a través del líquido seminal de la próstata.",
+            "La placenta capta oxígeno y nutrientes de la sangre materna y los envía al feto por el cordón umbilical, eliminando desechos.",
+            "Los testículos maternos filtran las proteínas hacia las trompas de Falopio.",
+            "El feto respira aire directamente abriendo los pulmones dentro de la vagina.",
+            "La mucosa del endometrio se expulsa cada mes llevando oxígeno al feto."
         ],
         correct: 1,
-        explain: "La placenta permite el intercambio de oxígeno y sustancias nutritivas entre la madre y el feto sin que sus sangres se mezclen directamente."
+        explain: "La placenta realiza el intercambio de oxígeno y nutrientes mediante la circulación umbilical."
     },
     {
         id: "m3_q7", mission: 3, idx: 7, type: "img_label", points: 150, diff: "DIFÍCIL",
         title: "Identificación Visual: Las Fases del Parto",
         imgKey: "fases_parto",
-        text: "Observa la ilustración de las 3 fases del parto y ordena sus etapas:",
+        text: "Observa la ilustración de las 3 fases del parto e identifica cada etapa:",
         labels: [
-            { id: 1, text: "Imagen superior (cuello del útero abriéndose):", correct: "Dilatación", choices: ["Dilatación", "Expulsión", "Alumbramiento"] },
-            { id: 2, text: "Imagen central (bebé saliendo al exterior):", correct: "Expulsión", choices: ["Expulsión", "Dilatación", "Fecundación"] },
-            { id: 3, text: "Imagen inferior (útero desprendiendo la placenta):", correct: "Alumbramiento", choices: ["Alumbramiento", "Expulsión", "Anidación"] }
+            { id: 1, text: "Fase 1 (Cuello del útero abierto y borrado):", correct: "Dilatación", choices: ["Dilatación", "Expulsión", "Alumbramiento"] },
+            { id: 2, text: "Fase 2 (Nacimiento del bebé por el canal vaginal):", correct: "Expulsión", choices: ["Expulsión", "Dilatación", "Fecundación"] },
+            { id: 3, text: "Fase 3 (Salida de la placenta tras el nacimiento):", correct: "Alumbramiento", choices: ["Alumbramiento", "Expulsión", "Anidación"] }
         ],
-        explain: "El orden biológico del nacimiento es: 1º Dilatación ➔ 2º Expulsión ➔ 3º Alumbramiento."
+        explain: "Secuencia del parto: Dilatación, Expulsión y Alumbramiento."
     },
     {
         id: "m3_q8", mission: 3, idx: 8, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Importancia de la Lactancia Materna",
-        text: "¿Qué aporta la leche materna al recién nacido en sus primeros meses de vida?",
+        title: "Ventajas Biológicas de la Lactancia Materna",
+        text: "¿Por qué se recomienda la lactancia materna para el recién nacido?",
         options: [
-            "Únicamente agua con azúcares.",
-            "Nutrientes completos y defensas naturales (anticuerpos) contra enfermedades e infecciones.",
-            "Aire oxigenado para los pulmones.",
-            "Glóbulos rojos para las piernas.",
-            "Jugos pancreáticos."
+            "Suministra testosterona para acelerar el estirón puberal en los primeros días.",
+            "Proporciona nutrientes equilibrados y anticuerpos que protegen al recién nacido frente a infecciones.",
+            "Reemplaza la función respiratoria del cordón umbilical dentro del útero.",
+            "Acelera la formación de óvulos en los ovarios del recién nacido.",
+            "Produce la desinfección del conducto deferente masculino."
         ],
         correct: 1,
-        explain: "La leche materna es el alimento ideal porque suministra nutrientes equilibrados e inmunoglobulinas protectoras."
+        explain: "La leche materna aporta alimento idóneo e inmunoglobulinas que transmiten inmunidad pasiva."
     },
     {
         id: "m3_q9", mission: 3, idx: 9, type: "fill", points: 100, diff: "MEDIO",
-        title: "Duración del Embarazo Humano",
-        text: "Completa los datos de la gestación humana:",
-        template: "El embarazo humano dura aproximadamente {1} meses (unas {2} semanas de gestación).",
+        title: "Duración de la Gestación Humana",
+        text: "Completa los parámetros temporales del embarazo:",
+        template: "La gestación humana dura aproximadamente {1} meses, equivalentes a unas {2} semanas, transcurriendo en el interior del {3}.",
         blanks: [
             { id: 1, correct: "9", choices: ["9", "3", "12"] },
-            { id: 2, correct: "40", choices: ["40", "20", "60"] }
+            { id: 2, correct: "40", choices: ["40", "20", "60"] },
+            { id: 3, correct: "útero", choices: ["útero", "ovario", "estante"] }
         ],
-        explain: "La gestación promedio en la especie humana abarca 9 meses de calendario (40 semanas)."
+        explain: "9 meses de calendario (40 semanas) de gestación intrauterina."
     },
     {
         id: "m3_q10", mission: 3, idx: 10, type: "mc5", points: 150, diff: "DIFÍCIL",
-        title: "Gemelos Univitelinos vs Mellizos Bivitelinos",
-        text: "¿Por qué los hermanos gemelos idénticos tienen exactamente el mismo ADN?",
+        title: "Origen Genético de Gemelos Idénticos",
+        text: "¿Cuál es el origen biológico de los gemelos univitelinos?",
         options: [
-            "Porque proceden de dos óvulos diferentes.",
-            "Porque proceden de un único óvulo fecundado por un espermatozoide que se dividió en dos embriones.",
-            "Porque uno nace en verano y otro en invierno.",
-            "Porque los educan en el mismo colegio.",
-            "Porque comen los mismos alimentos."
+            "Los gemelos idénticos surgen de dos óvulos distintos fecundados en meses diferentes de la gestación.",
+            "Los gemelos idénticos proceden de un solo óvulo y un solo espermatozoide (un cigoto) que se escinde en dos embriones con idéntico ADN.",
+            "Los gemelos poseen ADN distinto porque uno se alimenta de la placenta y el otro del líquido seminal.",
+            "Los mellizos se forman por la fusión de dos cigotos en una misma trompa de Falopio dando el mismo ADN.",
+            "La escisión del cigoto solo ocurre durante la tercera etapa del parto o alumbramiento."
         ],
         correct: 1,
-        explain: "Los gemelos idénticos (univitelinos) surgen del mismo cigoto original que se escinde en dos embriones gemelos."
+        explain: "Un único cigoto original se divide en dos embriones genéticamente idénticos (gemelos univitelinos)."
     },
 
     // --- NIVEL 4: SALUD, MENSTRUACIÓN, HÁBITOS E IGUALDAD ---
     {
         id: "m4_q1", mission: 4, idx: 1, type: "mc5", points: 50, diff: "FÁCIL",
-        title: "El Concepto de Menstruación",
-        text: "¿Por qué se produce el sangrado menstrual en la mujer?",
+        title: "Mecanismo Biológico de la Menstruación",
+        text: "¿Qué provoca la menstruación en el ciclo reproductor femenino?",
         options: [
-            "Por una herida en la vejiga.",
-            "Por el desprendimiento de la mucosa uterina (endometrio) cuando el óvulo no ha sido fecundado.",
-            "Porque el estómago se llena de agua.",
-            "Por comer alimentos fríos.",
-            "Porque se rompe una vena del brazo."
+            "La expulsión de la placenta y del cordón umbilical al finalizar la gestación.",
+            "La descamación periódica del endometrio (mucosa del útero) con sangrado cuando no se produce la fecundación del óvulo.",
+            "La liberación de líquido seminal por las vesículas seminales durante la pubertad.",
+            "La rotura de la bolsa amniótica durante la fase de dilatación en el parto.",
+            "La maduración de espermatozoides dentro del escroto."
         ],
         correct: 1,
-        explain: "Si no hay embarazo, la pared interna del útero preparada para acoger al bebé se desprende y se expulsa junto con el óvulo."
+        explain: "Al no haber fecundación, el endometrio uterino se desprende dando lugar al sangrado menstrual."
     },
     {
         id: "m4_q2", mission: 4, idx: 2, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Desmitificación de la Menstruación",
-        text: "¿Es verdad que durante la menstruación no se debe hacer ejercicio ni ducharse?",
+        title: "Desmitificación de Mitos sobre la Menstruación",
+        text: "¿Es cierto que ducharse o hacer deporte durante la regla es perjudicial para la salud?",
         options: [
-            "SÍ, porque el agua corta la regla inmediatamente.",
-            "NO, es un MITO FALSO. Ducharse a diario y hacer ejercicio moderado es totalmente sano y recomendable.",
-            "SÍ, hay que quedarse en cama sin moverse 10 días.",
-            "SÍ, la regla es una enfermedad grave.",
-            "SÍ, porque se pierde la memoria."
+            "Es VERDADERO. Ducharse durante la regla corta el flujo menstrual y produce graves enfermedades en los ovarios.",
+            "Es un MITO FALSO. La higiene con ducha diaria y la actividad física moderada son totalmente recomendables y saludables.",
+            "Es VERDADERO. Durante la menstruación la mujer debe permanecer en reposo absoluto sin acudir al colegio.",
+            "Es VERDADERO. El agua de la ducha destruye los caracteres sexuales secundarios femeninos.",
+            "Es VERDADERO. La regla es una infección que requiere tomar antibióticos de forma continua."
         ],
         correct: 1,
-        explain: "La menstruación es un proceso biológico natural. Mantener la higiene diaria mediante la ducha es saludable y necesario."
+        explain: "Ducharse diariamente durante la menstruación es sano, seguro e imprescindible para la higiene personal."
     },
     {
         id: "m4_q3", mission: 4, idx: 3, type: "fill", points: 100, diff: "MEDIO",
-        title: "Importancia de la Higiene en la Pubertad",
-        text: "Completa el texto sobre el cuidado corporal:",
-        template: "En la pubertad aumenta la actividad de las glándulas {1}, por lo que la {2} diaria con agua y jabón neutro es esencial para prevenir infecciones y malos olores.",
+        title: "Higiene y Autocuidado en la Pubertad",
+        text: "Completa las pautas de higiene personal:",
+        template: "En la pubertad aumenta la actividad de las glándulas {1}, por lo que la {2} diaria con agua y jabón neutro en la piel y la zona genital previene {3}.",
         blanks: [
-            { id: 1, correct: "sudoríparas", choices: ["sudoríparas", "salivales", "renales"] },
-            { id: 2, correct: "ducha", choices: ["ducha", "vacuna", "comida"] }
+            { id: 1, correct: "sudoríparas", choices: ["sudoríparas", "seminales", "placentarias"] },
+            { id: 2, correct: "ducha", choices: ["ducha", "ovulación", "dilatación"] },
+            { id: 3, correct: "infecciones", choices: ["infecciones", "gestaciones", "fecundaciones"] }
         ],
-        explain: "El aumento hormonal incrementa el sudor, requiriendo un cuidado especial de la higiene diaria."
+        explain: "El aumento de la transpiración sudorípara exige higiene diaria para evitar infecciones."
     },
     {
         id: "m4_q4", mission: 4, idx: 4, type: "mc5", points: 150, diff: "DIFÍCIL",
-        title: "Riesgos del Alcohol y Tabaco en la Gestación",
-        text: "¿Por qué una mujer embarazada no debe consumir alcohol ni fumar?",
+        title: "Prevención de Sustancias Tóxicas en la Gestación",
+        text: "¿Por qué el alcohol y el tabaco resultan altamente peligrosos durante el embarazo?",
         options: [
-            "Porque solo le produce tos a la madre.",
-            "Porque el alcohol y la nicotina atraviesan la placenta y el cordón umbilical, pudiendo causar lesiones graves o malformaciones en el feto.",
-            "Porque cambia el color del pelo del bebé.",
-            "Porque no afecta en nada al embrión.",
-            "Porque hace crecer más rápido los dientes."
+            "Solo afectan a la formación del esmalte dental en los caracteres sexuales primarios de la madre.",
+            "Atraviesan la barrera placentaria a través del cordón umbilical, afectando gravemente el desarrollo de los órganos del feto.",
+            "Aumentan la producción de óvulos en las trompas de Falopio durante el alumbramiento.",
+            "Transforman el líquido amniótico en líquido seminal dentro del útero.",
+            "Impiden que el cigoto se divida en las vesículas seminales masculinas."
         ],
         correct: 1,
-        explain: "Las sustancias tóxicas del tabaco y alcohol pasan a la sangre fetal a través de la placenta afectando su desarrollo."
+        explain: "Nicotina y alcohol cruzan la placenta dañando el desarrollo biológico del feto."
     },
     {
         id: "m4_q5", mission: 4, idx: 5, type: "match", points: 100, diff: "MEDIO",
-        title: "Valores ODS 5: Igualdad de Género",
-        text: "Relaciona cada principio con la actitud correcta en el colegio:",
+        title: "Valores ODS 5: Igualdad y Respeto en el Aula",
+        text: "Relaciona cada valor con su aplicación en la convivencia:",
         pairs: [
-            { key: "Igualdad de Derechos", correct: "Niños y niñas tienen la misma capacidad de estudio y juego" },
-            { key: "Corresponsabilidad", correct: "El cuidado del hogar y los bebés es tarea de hombres y mujeres" },
-            { key: "Respeto a la Diversidad", correct: "Aceptar que cada persona tiene su propio ritmo corporal" }
+            { key: "Igualdad de Derechos y Capacidades", correct: "Niños y niñas tienen exactamente las mismas oportunidades académicas, sociales y personales" },
+            { key: "Corresponsabilidad Familiar", correct: "El cuidado de los bebés y las tareas del hogar deben compartirse equitativamente" },
+            { key: "Respeto a la Diversidad Corporal", correct: "Aceptar con empatía que cada compañero/a madura a un ritmo biológico único" }
         ],
         optionsList: [
-            "Niños y niñas tienen la misma capacidad de estudio y juego",
-            "El cuidado del hogar y los bebés es tarea de hombres y mujeres",
-            "Aceptar que cada persona tiene su propio ritmo corporal"
+            "Niños y niñas tienen exactamente las mismas oportunidades académicas, sociales y personales",
+            "El cuidado de los bebés y las tareas del hogar deben compartirse equitativamente",
+            "Aceptar con empatía que cada compañero/a madura a un ritmo biológico único"
         ],
-        explain: "La igualdad de género (ODS 5) promueve la corresponsabilidad y la no discriminación."
+        // Mª LUZ EN EL BLOQUE 4
+        maestraCorrect: "👩‍🏫 ¡La maestra Mª Luz se emociona en clase! '¡Excelente razonamiento y empatía! Da gusto ver cómo aplicáis los contenidos y los valores en el aula.'",
+        maestraWrong: "👩‍🏫 La maestra Mª Luz se abanica con el cuaderno... '¡Otra cana más a la colección! ¡Leed despacito la pregunta antes de marcar, por favor!'",
+        explain: "ODS 5: Igualdad de oportunidades, corresponsabilidad y empatía ante la diversidad corporal."
     },
     {
         id: "m4_q6", mission: 4, idx: 6, type: "mc5", points: 50, diff: "FÁCIL",
-        title: "Profesionales de la Salud Sexual y Reproductiva",
-        text: "¿Qué profesional sanitario se encarga del seguimiento del embarazo, parto y atención al recién nacido?",
+        title: "Especialistas Médicos de la Reproducción",
+        text: "¿Qué profesionales sanitarios velan por la salud del aparato reproductor, la gestación y el parto?",
         options: [
-            "El dentista.",
-            "La matrona / matrón y el ginecólogo/a.",
-            "El traumatólogo.",
-            "El óptico.",
-            "El veterinario."
+            "Los podólogos y traumatólogos encargados de la vesícula seminal.",
+            "Las matronas/matrones y los ginecólogos/as, especializados en la salud reproductiva.",
+            "Los otorrinolaringólogos dedicados a la bolsa amniótica.",
+            "Los dentistas y cirujanos maxilofaciales del cordón umbilical.",
+            "Los veterinarios de fauna marina."
         ],
         correct: 1,
-        explain: "Los matrones/as y ginecólogos/as son los especialistas sanitarios del aparato reproductor y la maternidad."
+        explain: "Matrones/as y ginecólogos/as son los profesionales de la salud reproductiva y la obstetricia."
     },
     {
         id: "m4_q7", mission: 4, idx: 7, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Búsqueda de Información Veraz",
-        text: "Si un adolescente tiene dudas o inquietudes sobre los cambios en su cuerpo, ¿a dónde debe acudir?",
+        title: "Criterios para Obtener Información Veraz",
+        text: "¿Cuál es la actitud adecuada ante dudas sobre la salud sexual o los cambios de la pubertad?",
         options: [
-            "Creer ciegamente cualquier rumor en redes sociales.",
-            "Consultar a adultos de confianza: padres, profesores o profesionales médicos.",
-            "Guardarse la duda y no hablar con nadie jamás.",
-            "Buscar en foros anónimos de internet.",
-            "Preguntar a un niño de 3 años."
+            "Seguir consejos anónimos en redes sociales o foros de internet sin verificación.",
+            "Consultar con adultos de referencia (familia, docentes) o profesionales sanitarios, acudiendo a fuentes científicas rigurosas.",
+            "Ocultar los cambios físicos o preocupaciones por vergüenza sin pedir ayuda a nadie.",
+            "Inventar teorías propias sobre la anatomía sin consultar el libro de texto.",
+            "Guiarse por mitos antiguos transmitidos sin base científica."
         ],
         correct: 1,
-        explain: "La información médica y veraz debe provenir de fuentes científicas y adultos de confianza."
+        explain: "Acceder a fuentes médicas verificadas y adultos de confianza garantiza información veraz."
     },
     {
         id: "m4_q8", mission: 4, idx: 8, type: "fill", points: 100, diff: "MEDIO",
-        title: "Alimentación en el 'Estirón'",
-        text: "Completa las pautas de alimentación saludable:",
-        template: "Durante la pubertad es crucial consumir alimentos ricos en {1} para los huesos y {2} para los músculos, reduciendo refrescos azucarados.",
+        title: "Pautas de Nutrición en la Adolescencia",
+        text: "Completa las necesidades nutricionales durante el crecimiento:",
+        template: "Durante el estirón puberal es fundamental una dieta rica en {1} para el desarrollo óseo y {2} para la musculatura, manteniendo una correcta {3}.",
         blanks: [
-            { id: 1, correct: "calcio", choices: ["calcio", "azúcar", "grasa"] },
-            { id: 2, correct: "proteínas", choices: ["proteínas", "sal", "aceite"] }
+            { id: 1, correct: "calcio", choices: ["calcio", "líquido seminal", "progesterona"] },
+            { id: 2, correct: "proteínas", choices: ["proteínas", "anticuerpos", "gametos"] },
+            { id: 3, correct: "hidratación", choices: ["hidratación", "dilatación", "anidación"] }
         ],
-        explain: "El crecimiento de los huesos y músculos requiere nutrientes esenciales como el calcio y las proteínas."
+        explain: "Calcio para los huesos, proteínas para los músculos e hidratación diaria continua."
     },
     {
         id: "m4_q9", mission: 4, idx: 9, type: "mc5", points: 100, diff: "MEDIO",
-        title: "Expresión de Emociones y Empatía",
-        text: "¿Es verdad que los niños no deben llorar o mostrar vulnerabilidad?",
+        title: "Superación de Estereotipos Emocionales",
+        text: "¿Es cierto que mostrar vulnerabilidad o llorar es exclusivo de las niñas?",
         options: [
-            "SÍ, los chicos no deben llorar nunca.",
-            "NO, es un estereotipo falso. Expresar emociones como la tristeza o el miedo es sano para todas las personas.",
-            "SÍ, llorar es malo para los pulmones.",
-            "SÍ, solo las niñas pueden sentir tristeza.",
-            "SÍ, las emociones no existen."
+            "VERDADERO. Los chicos no deben mostrar emociones jamás porque afecta a la producción de testosterona.",
+            "FALSO. Expresar sentimientos como la tristeza, el miedo o la alegría es natural y saludable para todas las personas sin distinción de género.",
+            "VERDADERO. Solo las chicas tienen sistema nervioso para sentir tristeza o empatía.",
+            "VERDADERO. Llorar perjudica el crecimiento de los caracteres sexuales secundarios.",
+            "VERDADERO. Las emociones desaparecen por completo durante la pubertad."
         ],
         correct: 1,
-        explain: "Romper con los estereotipos de género implica reconocer que sentir y comunicar emociones es saludable para todos."
+        explain: "Las emociones son inherentes a todos los seres humanos; expresarlas de forma asertiva es saludable."
     },
     {
         id: "m4_q10", mission: 4, idx: 10, type: "scheme", points: 150, diff: "DIFÍCIL",
-        title: "Esquema Final: Compromiso con la Salud",
-        text: "Completa el esquema del autocuidado en la adolescencia:",
+        title: "Esquema Final: Compromiso con el Autocuidado y la Salud",
+        text: "Completa los pilares de la salud integral en 6º de Primaria:",
         nodes: [
-            { label: "Pilar 1 (Higiene):", correct: "Ducha y limpieza genital diaria", choices: ["Ducha y limpieza genital diaria", "No lavarse", "Usar colonia sin agua"] },
-            { label: "Pilar 2 (Convivencia):", correct: "Respeto a la diversidad corporal", choices: ["Respeto a la diversidad corporal", "Burlarse de los demás", "Ignorar a los amigos"] }
+            { label: "Pilar 1 (Salud Física):", correct: "Ducha e higiene cotidiana con lavado de la zona genital y ropa limpia", choices: ["Ducha e higiene cotidiana con lavado de la zona genital y ropa limpia", "Evitar ducharse durante la regla", "No lavarse la piel"] },
+            { label: "Pilar 2 (Salud Emocional y Convivencia):", correct: "Empatía, respeto a la diversidad de ritmos y rechazo a burlas", choices: ["Empatía, respeto a la diversidad de ritmos y rechazo a burlas", "Ignorar las emociones", "Juzgar el ritmo físico de los demás"] }
         ],
-        explain: "El autocuidado abarca tanto la higiene física como la convivencia empática con los demás."
+        explain: "El autocuidado integral combina la higiene física rigurosa y la convivencia empática."
     }
 ];
 
@@ -987,14 +1030,35 @@ function verifyQuest(qId) {
 
     if (isCorrect) {
         playSfx('correct'); fbBox.className = 'feedback-box correct';
-        msgEl.innerHTML = "🌟 ¡RESPUESTA CORRECTA! Maestra Mª Luz & NutriBot aplauden tu rigor científico.";
+        if (quest.maestraCorrect) {
+            msgEl.innerHTML = `
+                <div class="maestra-msg-container">
+                    <img src="bio_cyber_mascot.png" class="nutribot-avatar" alt="NutriBot" onerror="this.style.display='none'">
+                    <div class="maestra-text">${quest.maestraCorrect}</div>
+                </div>
+            `;
+        } else {
+            msgEl.innerHTML = "🌟 ¡RESPUESTA CORRECTA! Excelente deducción científica.";
+        }
+        msgEl.style.display = 'block';
+
         if (!completedQuests.has(qId)) {
             completedQuests.add(qId); userXp += quest.points;
             document.getElementById('xp-val').textContent = userXp; updateRank();
         }
     } else {
         playSfx('wrong'); fbBox.className = 'feedback-box wrong';
-        msgEl.innerHTML = "💡 ¡CASI! Revisa la explicación razonada para aprender del error.";
+        if (quest.maestraWrong) {
+            msgEl.innerHTML = `
+                <div class="maestra-msg-container">
+                    <img src="bio_cyber_mascot.png" class="nutribot-avatar" alt="NutriBot" onerror="this.style.display='none'">
+                    <div class="maestra-text">${quest.maestraWrong}</div>
+                </div>
+            `;
+        } else {
+            msgEl.innerHTML = "💡 ¡CASI! Revisa la explicación razonada para aprender del error.";
+        }
+        msgEl.style.display = 'block';
     }
 
     expEl.innerHTML = `<strong>Análisis Científico:</strong> ${quest.explain}`;
